@@ -30,7 +30,6 @@
    "scripts": {
       "start": "set NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
       "gen-schema-types": "gql2ts src/graphql/schema.graphql -o src/types/schema.d.ts",
-      "test-server": "set NODE_ENV=test&& ts-node src/index.ts",
       "test": "set NODE_ENV=test&& jest"
    }
 }
