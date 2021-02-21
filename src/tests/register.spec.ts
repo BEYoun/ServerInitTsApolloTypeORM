@@ -1,20 +1,29 @@
-// foo.spec.ts
-import { mocked } from 'ts-jest/utils'
-import { foo } from './foo'
-jest.mock('./foo')
+import { createTypeormConnection } from "../utils/createTypeormConnection"
+import { host } from "./constant";
+import { request } from 'graphql-request';
+import { User } from "../entity/User";
 
-// here the whole foo var is mocked deeply
-const mockedFoo = mocked(foo, true)
-
-test('deep', () => {
-    // there will be no TS error here, and you'll have completion in modern IDEs
-    mockedFoo.a.b.c.hello('me')
-    // same here
-    expect(mockedFoo.a.b.c.hello.mock.calls).toHaveLength(1)
+beforeAll(async () => {
+    await createTypeormConnection();
 })
 
-test('direct', () => {
-    foo.name()
-    // here only foo.name is mocked (or its methods if it's an object)
-    expect(mocked(foo.name).mock.calls).toHaveLength(1)
+const email = "";
+const password = "";
+
+const mutation = `
+    mutation {
+        register(email: "${email}", password: "${password}")
+    }
+`
+
+test('deep', async () => {
+    const respoonse = await request(host, mutation);
+    expect(respoonse).toEqual({ register: true });
+    const users = await User.find({ where: { email } });
+    expect(users).toHaveLength(1);
+
+    const user = users[0];
+    expect(user.email).toEqual(email);
+    expect(user.password).not.toEqual(password);
+
 })

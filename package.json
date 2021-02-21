@@ -3,6 +3,7 @@
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "devDependencies": {
+      "@jagi/jest-transform-graphql": "^1.0.2",
       "@types/babel__core": "^7.1.12",
       "@types/bcrypt": "^3.0.0",
       "@types/jest": "^26.0.20",
@@ -19,6 +20,7 @@
    "dependencies": {
       "bcrypt": "^5.0.0",
       "graphql-import": "^1.0.2",
+      "graphql-request": "^3.4.0",
       "graphql-yoga": "^1.18.3",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.10",
@@ -26,8 +28,9 @@
       "uuid": "^8.3.2"
    },
    "scripts": {
-      "start": "nodemon --exec ts-node src/index.ts",
+      "start": "set NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
       "gen-schema-types": "gql2ts src/graphql/schema.graphql -o src/types/schema.d.ts",
-      "test": "jest"
+      "test-server": "set NODE_ENV=test&& ts-node src/index.ts",
+      "test": "set NODE_ENV=test&& jest"
    }
 }
